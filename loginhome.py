@@ -14,7 +14,7 @@ firebaseconfig = {
 firebase = pyrebase.initialize_app(firebaseconfig)
 auth = firebase.auth()
 
-def app():
+def login():
     st.title(':green[ Carbon Footprint Calculator🍃]')
 
     choice = st.radio('Login/Sign-Up', ['Login', 'Sign-Up'], captions=['Existing user', 'New user'], index=0,horizontal=True)
@@ -29,9 +29,9 @@ def app():
                 st.success("User logged in successfully!")
                 
                 # Redirect or perform further actions after successful login
-            except Exception as e:
+            except :
                 st.warning('Login failed. Please enter valid email and password.')
-                st.error(str(e))
+                #st.error(str(e))
 
     else:
         email = st.text_input('Email Address')
@@ -44,8 +44,8 @@ def app():
                 st.success("Account created successfully")
                 st.markdown("Please login using username and password")
                 st.balloons()
-            except Exception as e:
+            except :
                 st.warning("Account creation failed.")
-                st.error(str(e))
+                #st.error(str(e))
 
-app()
+login()
