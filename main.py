@@ -19,11 +19,17 @@ class MultiApp:
             "function": func
         })
 
+    def check_authentication(self):
+        if 'authenticated' not in st.session_state or not st.session_state['authenticated']:
+         st.error("Please log in to access the calculation page.")
+         login.login()
+         st.stop()
+
     def run(self):
         # app = st.sidebar(
         with st.sidebar:        
             app = option_menu(
-                menu_title=' ',
+                menu_title='Carbon Footprint Calculator ',
                 options=['Home','Account','Calculate'],
                 icons=['house-fill','person-circle','tree-fill'],
                 menu_icon='',
@@ -36,18 +42,19 @@ class MultiApp:
                 
                 )
 
-        
+        if app != "Calculate":
+            st.session_state['authenticated'] = False
         if app == "Home":
             home.app()
         if app == "Account":
-            login.login()    
+            login.login()  
+            st.session_state['authenticated'] = True  
         if app == "Calculate":
-            cfc.cfc()        
-        #if app == 'Your Posts':
-            #your.app()
-        #if app == 'about':
-            #about.app()    
-             
+            # Check if the user has authenticated
+            self.check_authentication()
+            cfc.cfc()       
+   
+           
           
 
 if __name__ == "__main__":
