@@ -68,23 +68,7 @@ def login():
         except Exception as e:
             st.warning(f'Signin failed: {e}')
 
-    def reset_password(email):
-        try:
-            rest_api_url = "https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode"
-            payload = {
-                "email": email,
-                "requestType": "PASSWORD_RESET"
-            }
-            payload = json.dumps(payload)
-            r = requests.post(rest_api_url, params={"key": "AIzaSyAyZy7muAWri-zIstiP3SOKEgpOLLxT4wY"}, data=payload)
-            if r.status_code == 200:
-                return True, "Reset email Sent"
-            else:
-                # Handle error response
-                error_message = r.json().get('error', {}).get('message')
-                return False, error_message
-        except Exception as e:
-            return False, str(e)
+    
 
     # Example usage
     # email = "example@example.com"
@@ -159,10 +143,3 @@ def login():
                 st.text('Name '+st.session_state.username)
                 st.text('Email id: '+st.session_state.useremail)
                 st.button('Sign out', on_click=t) 
-            
-                
-    
-
-                            
-    def ap():
-        st.write('Posts')

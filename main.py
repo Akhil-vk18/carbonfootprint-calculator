@@ -1,7 +1,7 @@
 import streamlit as st
 from streamlit_option_menu import option_menu
 
-import login, cfc,home
+import home,login, cfc
 
 # Set wide layout and page name
 st.set_page_config(layout="wide", page_title="Personal Carbon Calculator")
@@ -21,7 +21,7 @@ class MultiApp:
 
     
     def run(self):
-        # app = st.sidebar(
+        
         with st.sidebar:        
             app = option_menu(
                 menu_title='Carbon Footprint Calculator ',
@@ -37,8 +37,7 @@ class MultiApp:
                 
                 )
 
-        #if app != "Calculate":
-            #st.session_state['authenticated'] = False
+        
         if app == "Home":
             home.app()
         if app == "Account":

@@ -1,6 +1,7 @@
 import streamlit as st
 import tips
 import pdfkit
+
 largest_emission_category=0
 
 def cfc():
@@ -46,7 +47,7 @@ def cfc():
                 "Diet": 2.0,
                 "Waste": 0.2
             }
-    }
+        }
 
             
 
@@ -130,12 +131,14 @@ def cfc():
                 st.warning(f"🚨 The largest contributor to your carbon footprint is: {largest_emission_category} ({emissions[largest_emission_category]} tonnes CO2 per year)")
                  # Print suggestions for the largest emission category
         suggestions = tips.print_suggestion(largest_emission_category)
-
-        if st.button("Generate tips"):
-                    st.subheader("💡 Suggestions for Reducing Emissions")
-                    st.write("Here are some personalized suggestions for reducing your carbon footprint in the category with the highest emissions:")
-                    st.write(suggestions)
+        col5,col6=st.columns(2)
+        with col5:
+            if st.button("Generate tips"):
                     
+                        st.subheader("💡 Suggestions for Reducing Emissions")
+                        st.write("Here are some personalized suggestions for reducing your carbon footprint in the category with the highest emissions:")
+                        st.write(suggestions)
+                            
              # Generate PDF
         wkhtmltopdf_path = r'C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe'
 
@@ -143,7 +146,7 @@ def cfc():
                 f"""
                 <h1>Personal Carbon Calculator Report</h1>
                 <h2>User Information</h2>
-                <p>Name: {st.session_state.useremail}</p>
+                <p>Name: {st.session_state.username}</p>
                 <p>Country:{country}</P>
                 <h2>Carbon Emissions by Category</h2>
                 <p>Transportation: {transportation_emissions} tonnes CO2 per year</p>
@@ -158,8 +161,10 @@ def cfc():
                 False,
                 configuration=pdfkit.configuration(wkhtmltopdf=wkhtmltopdf_path)
             )
-        st.download_button("Download PDF", pdf, "carbon_calculator_report.pdf", "application/pdf")
-    #else:
-       # st.write('Please Login to use the calculator!!')
+        st.write("\n")
+        with col6:
+         st.download_button("Download PDF", pdf, "carbon_calculator_report.pdf", "application/pdf")
+    else:
+        st.write('Please Login to use the calculator!!')
 
 cfc()

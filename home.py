@@ -1,12 +1,9 @@
 import streamlit as st
 
-from co2_animation import generate_co2_animation
 
 def app():
 
-    # Add animation
-    st.markdown(generate_co2_animation(), unsafe_allow_html=True)
-
+   
     st.title("Carbon Footprint: Definition and Reduction")
 
     st.header("What is Carbon Footprint?")
@@ -39,5 +36,4 @@ def app():
     st.write("- Reducing, reusing, and recycling waste materials")
     st.write("- Supporting policies and initiatives aimed at carbon reduction and environmental protection")
 
-if __name__ == "__main__":
-    app()
+
