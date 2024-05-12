@@ -8,8 +8,9 @@ def cfc():
     if 'useremail' not in st.session_state:
        st.session_state.useremail = ''
 
-    if st.session_state.useremail:
-        
+    if st.session_state.useremail and not st.session_state.admin :
+        st.sidebar.markdown('Hello, '+st.session_state.username)
+        st.sidebar.markdown('You are logged in as a user')
         EMISSION_FACTORS = {
             "India": {
                 "Transportation": 0.14,  # kgCO2/km

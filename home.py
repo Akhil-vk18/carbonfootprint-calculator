@@ -35,5 +35,3 @@ def app():
     st.write("- Adopting eco-friendly practices in agriculture and forestry")
     st.write("- Reducing, reusing, and recycling waste materials")
     st.write("- Supporting policies and initiatives aimed at carbon reduction and environmental protection")
-
-
