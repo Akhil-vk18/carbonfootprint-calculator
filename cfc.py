@@ -1,48 +1,77 @@
-
 import streamlit as st
-def cfc():
+import tips
+import pdfkit
+largest_emission_category=0
 
+def cfc():
     if 'useremail' not in st.session_state:
-        st.session_state.useremail = ''
-        st.write("Please Login first")
-        return  # Exit the function if user is not logged in
+       st.session_state.useremail = ''
 
     if st.session_state.useremail:
-    # Define emission factors (example values, replace with accurate data)
+        
         EMISSION_FACTORS = {
             "India": {
                 "Transportation": 0.14,  # kgCO2/km
                 "Electricity": 0.82,  # kgCO2/kWh
                 "Diet": 1.25,  # kgCO2/meal, 2.5kgco2/kg
                 "Waste": 0.1  # kgCO2/kg
+            },
+            "China": {
+                "Transportation": 0.25,
+                "Electricity": 1.0,
+                "Diet": 1.5,
+                "Waste": 0.2
+                },
+            "United States": {
+                "Transportation": 0.41,
+                "Electricity": 0.94,
+                "Diet": 2.5,
+                "Waste": 0.2
+            },
+            "European Union": {
+                "Transportation": 0.22,
+                "Electricity": 0.55,
+                "Diet": 1.8,
+                "Waste": 0.1
+            },
+            "Japan": {
+                "Transportation": 0.15,
+                "Electricity": 0.50,
+                "Diet": 1.5,
+                "Waste": 0.1
+            },
+            "Russia": {
+                "Transportation": 0.25,
+                "Electricity": 0.90,
+                "Diet": 2.0,
+                "Waste": 0.2
             }
-        }
+    }
 
-        # Set wide layout and page name
-        #st.set_page_config(layout="wide", page_title="Personal Carbon Calculator")
+            
 
+        
         # Streamlit app code
         st.title("Personal Carbon Calculator App ⚠️")
 
         # User inputs
         st.subheader("🌍 Your Country")
-        country = st.selectbox("Select", ["India"])
-
+        country = st.selectbox("Select", ["India", "China", "United States", "European Union", "Japan", "Russia"])
         col1, col2 = st.columns(2)
 
         with col1:
             st.subheader("🚗 Daily commute distance (in km)")
-            distance = st.slider("Distance", 0.0, 100.0, key="distance_input")
+            distance = st.number_input("Distance", value=0.0, step=0.1, format="%.1f")
 
             st.subheader("💡 Monthly electricity consumption (in kWh)")
-            electricity = st.slider("Electricity", 0.0, 1000.0, key="electricity_input")
+            electricity = st.number_input("Electricity", value=0.0, step=0.1, format="%.1f")
 
         with col2:
             st.subheader("🍽️ Waste generated per week (in kg)")
-            waste = st.slider("Waste", 0.0, 100.0, key="waste_input")
+            waste = st.number_input("Waste", value=0.0, step=0.1, format="%.1f")
 
             st.subheader("🍽️ Number of meals per day")
-            meals = st.number_input("Meals", 0, key="meals_input")
+            meals = st.number_input("Meals", value=0, step=1)
 
         # Normalize inputs
         if distance > 0:
@@ -88,5 +117,49 @@ def cfc():
             with col4:
                 st.subheader("Total Carbon Footprint")
                 st.success(f"🌍 Your total carbon footprint is: {total_emissions} tonnes CO2 per year")
-                st.warning("In 2021, CO2 emissions per capita for India was 1.9 tons of CO2 per capita. Between 1972 and 2021, CO2 emissions per capita of India grew substantially from 0.39 to 1.9 tons of CO2 per capita rising at an increasing annual rate that reached a maximum of 9.41% in 2021")
 
+                # Compare emissions and find the largest one
+                emissions = {
+                    "Transportation": transportation_emissions,
+                    "Electricity": electricity_emissions,
+                    "Diet": diet_emissions,
+                    "Waste": waste_emissions
+                }
+                global largest_emission_category 
+                largest_emission_category = max(emissions, key=emissions.get)
+                st.warning(f"🚨 The largest contributor to your carbon footprint is: {largest_emission_category} ({emissions[largest_emission_category]} tonnes CO2 per year)")
+                 # Print suggestions for the largest emission category
+        suggestions = tips.print_suggestion(largest_emission_category)
+
+        if st.button("Generate tips"):
+                    st.subheader("💡 Suggestions for Reducing Emissions")
+                    st.write("Here are some personalized suggestions for reducing your carbon footprint in the category with the highest emissions:")
+                    st.write(suggestions)
+                    
+             # Generate PDF
+        wkhtmltopdf_path = r'C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe'
+
+        pdf = pdfkit.from_string(
+                f"""
+                <h1>Personal Carbon Calculator Report</h1>
+                <h2>User Information</h2>
+                <p>Name: {st.session_state.useremail}</p>
+                <p>Country:{country}</P>
+                <h2>Carbon Emissions by Category</h2>
+                <p>Transportation: {transportation_emissions} tonnes CO2 per year</p>
+                <p>Electricity: {electricity_emissions} tonnes CO2 per year</p>
+                <p>Diet: {diet_emissions} tonnes CO2 per year</p>
+                <p>Waste: {waste_emissions} tonnes CO2 per year</p>
+                <h2>Total Carbon Footprint</h2>
+                <p>{total_emissions} tonnes CO2 per year</p>
+                <h2>Suggestions for Reducing Emissions</h2>
+                <p>{suggestions}</p>
+                """,
+                False,
+                configuration=pdfkit.configuration(wkhtmltopdf=wkhtmltopdf_path)
+            )
+        st.download_button("Download PDF", pdf, "carbon_calculator_report.pdf", "application/pdf")
+    #else:
+       # st.write('Please Login to use the calculator!!')
+
+cfc()

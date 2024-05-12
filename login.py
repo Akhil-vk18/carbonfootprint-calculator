@@ -34,7 +34,7 @@ def login():
             if username:
                 payload["displayName"] = username 
             payload = json.dumps(payload)
-            r = requests.post(rest_api_url, params={"key": "AIzaSyApr-etDzcGcsVcmaw7R7rPxx3A09as7uw"}, data=payload)
+            r = requests.post(rest_api_url, params={"key": "AIzaSyAyZy7muAWri-zIstiP3SOKEgpOLLxT4wY"}, data=payload)
             try:
                 return r.json()['email']
             except:
@@ -55,7 +55,7 @@ def login():
                 payload["password"] = password
             payload = json.dumps(payload)
             print('payload sigin',payload)
-            r = requests.post(rest_api_url, params={"key": "AIzaSyApr-etDzcGcsVcmaw7R7rPxx3A09as7uw"}, data=payload)
+            r = requests.post(rest_api_url, params={"key": "AIzaSyAyZy7muAWri-zIstiP3SOKEgpOLLxT4wY"}, data=payload)
             try:
                 data = r.json()
                 user_info = {
@@ -76,7 +76,7 @@ def login():
                 "requestType": "PASSWORD_RESET"
             }
             payload = json.dumps(payload)
-            r = requests.post(rest_api_url, params={"key": "AIzaSyApr-etDzcGcsVcmaw7R7rPxx3A09as7uw"}, data=payload)
+            r = requests.post(rest_api_url, params={"key": "AIzaSyAyZy7muAWri-zIstiP3SOKEgpOLLxT4wY"}, data=payload)
             if r.status_code == 200:
                 return True, "Reset email Sent"
             else:

@@ -3,9 +3,9 @@ from streamlit_option_menu import option_menu
 
 import login, cfc,home
 
-st.set_page_config(
-        page_title="CARBON FOOTPRINT CALCULATOR",
-)
+# Set wide layout and page name
+st.set_page_config(layout="wide", page_title="Personal Carbon Calculator")
+
 
 class MultiApp:
 
@@ -19,12 +19,7 @@ class MultiApp:
             "function": func
         })
 
-    def check_authentication(self):
-        if 'authenticated' not in st.session_state or not st.session_state['authenticated']:
-         st.error("Please log in to access the calculation page.")
-         login.login()
-         st.stop()
-
+    
     def run(self):
         # app = st.sidebar(
         with st.sidebar:        
@@ -42,16 +37,14 @@ class MultiApp:
                 
                 )
 
-        if app != "Calculate":
-            st.session_state['authenticated'] = False
+        #if app != "Calculate":
+            #st.session_state['authenticated'] = False
         if app == "Home":
             home.app()
         if app == "Account":
             login.login()  
             st.session_state['authenticated'] = True  
         if app == "Calculate":
-            # Check if the user has authenticated
-            self.check_authentication()
             cfc.cfc()       
    
            
