@@ -1,3 +1,4 @@
+streamlit==1.25.0
 anyio==4.7.0
 argon2-cffi==23.1.0
 argon2-cffi-bindings==21.2.0
