@@ -6,3 +6,4 @@ matplotlib
 seaborn
 plotly
 requests
+streamlit_option_menu
